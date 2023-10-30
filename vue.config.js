@@ -12,7 +12,18 @@ module.exports = {
       }
     }
   },
-
+//加入代理配置
+  devServer: {
+    proxy: {
+      '/api': {
+        target: 'https://link.okko.tk', // 后端API地址
+        changeOrigin: true,
+        pathRewrite: {
+          '^/': '' // 如果后端API没有以/api开头，可根据需要修改
+        }
+      }
+    }
+  },
   chainWebpack: config => {
     // set svg-sprite-loader
     config.module
