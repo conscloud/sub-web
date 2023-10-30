@@ -228,6 +228,16 @@ export default {
             ]
           },
           {
+            label: "ACL4SSR",
+            options: [
+              {
+                label: "ACL4SSR_Online_Full_MultiMode",
+                value:
+                  "https://ghproxy.com/https://raw.githubusercontent.com/conscloud/ACL4SSR/master/Clash/config/ACL4SSR_Online_Full_MultiMode_Private.ini"
+              }
+            ]
+          },
+          {
             label: "customized",
             options: [
               {
@@ -468,25 +478,60 @@ export default {
       }
 
       this.loading = true;
+      // let data = new FormData();
+      // data.append("url", this.customSubUrl);
 
-      let data = new FormData();
-      data.append("longUrl", btoa(this.customSubUrl));
+      // this.$axios
+      //   .post(shortUrlBackend, data, {
+      //     header: {
+      //       "Content-Type": "application/json; charset=utf-8"
+      //     }
+      //   })
+      //   .then(res => {
+      //     if (res.data.status === 200 && res.data.key !== "") {
+      //       this.curtomShortSubUrl = shortUrlBackend + res.data.key;
+      //       this.$copyText(this.curtomShortSubUrl);
+      //       this.$message.success("短链接已复制到剪贴板");
+      //     } else {
+      //       this.$message.error("短链接获取失败：" + res.data.Message);
+      //     }
+      //   })
+      // 构建请求参数对象
+      const requestData = {
+        'url': this.customSubUrl,
+      };
 
       this.$axios
-        .post(shortUrlBackend, data, {
-          header: {
-            "Content-Type": "application/form-data; charset=utf-8"
+        .post(shortUrlBackend, requestData,{
+          headers: {
+            "Content-Type": "application/json"
           }
         })
-        .then(res => {
-          if (res.data.Code === 1 && res.data.ShortUrl !== "") {
-            this.curtomShortSubUrl = res.data.ShortUrl;
-            this.$copyText(res.data.ShortUrl);
+        .then((response) => {
+          if (response.data.status === 200 && response.data.key !== "") {
+            // 响应成功，处理返回的短链接
+            this.curtomShortSubUrl = shortUrlBackend + response.data.key;
+            this.$copyText(this.curtomShortSubUrl);
             this.$message.success("短链接已复制到剪贴板");
           } else {
-            this.$message.error("短链接获取失败：" + res.data.Message);
+            // 响应不成功，显示错误消息
+            this.$message.error("短链接获取失败：" + response.data.Message);
           }
         })
+        // .post(shortUrlBackend, data, {
+        //   headers: {
+        //     "Content-Type": "application/json"
+        //   }
+        // })
+        // .then(res => {
+        //   if (res.data.status === 200 && res.data.key !== "") {
+        //     this.curtomShortSubUrl = shortUrlBackend + res.data.key;
+        //     this.$copyText(shortUrlBackend + res.data.key);
+        //     this.$message.success("短链接已复制到剪贴板");
+        //   } else {
+        //     this.$message.error("短链接获取失败：" + res.data.Message);
+        //   }
+        // })
         .catch(() => {
           this.$message.error("短链接获取失败");
         })
