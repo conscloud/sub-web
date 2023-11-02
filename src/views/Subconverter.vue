@@ -233,7 +233,7 @@ export default {
               {
                 label: "ACL4SSR_Online_Full_MultiMode",
                 value:
-                  "https://ghproxy.com/https://raw.githubusercontent.com/conscloud/ACL4SSR/master/Clash/config/ACL4SSR_Online_Full_MultiMode_Private.ini"
+                  "https://cdn.jsdelivr.net/gh/conscloud/ACL4SSR@master/Clash/config/ACL4SSR_Online_Full_MultiMode_Private.ini"
               }
             ]
           },
